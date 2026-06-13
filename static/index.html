@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stand Registry - Conference Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo">
+                <i class="fa-solid fa-cubes-stacked logo-icon"></i>
+                <div class="logo-text">
+                    <h1>Plenia Stand</h1>
+                    <span>CONFERENCE REGISTRY MANAGER</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="/docs" target="_blank" class="btn-secondary"><i class="fa-solid fa-book-open"></i> API Docs</a>
+                <a href="http://localhost:8081" target="_blank" class="btn-secondary"><i class="fa-solid fa-database"></i> Database Viewer</a>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <main class="app-main">
+            <!-- Sidebar: Registration Form -->
+            <section class="form-section glass-panel">
+                <div class="section-header">
+                    <h2 id="form-title"><i class="fa-solid fa-plus-circle"></i> Register Stand</h2>
+                    <p class="section-subtitle">Add or modify a company stand registration</p>
+                </div>
+
+                <form id="stand-form" class="stand-form">
+                    <input type="hidden" id="stand-id" value="">
+                    
+                    <!-- Company & Location Info -->
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="company_name">Company Name *</label>
+                            <input type="text" id="company_name" required placeholder="e.g. Acme Corporation">
+                        </div>
+                        <div class="form-group stand-num-group">
+                            <label for="stand_number">Stand #</label>
+                            <input type="text" id="stand_number" placeholder="e.g. B-24">
+                        </div>
+                    </div>
+
+                    <!-- Contact details -->
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="contact_email">Contact Email *</label>
+                            <input type="email" id="contact_email" required placeholder="name@company.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact_phone">Contact Phone</label>
+                            <input type="tel" id="contact_phone" placeholder="e.g. +1 555-0199">
+                        </div>
+                    </div>
+
+                    <!-- Abstract / Talk info -->
+                    <div class="form-group">
+                        <label for="abstract">Stand Summary & Abstract *</label>
+                        <textarea id="abstract" required placeholder="Briefly describe what your company will talk about, showcase, or demonstrate at the stand..." rows="4"></textarea>
+                        <span class="char-counter"><span id="char-count">0</span> characters (min 10)</span>
+                    </div>
+
+                    <!-- Dynamic List Inputs -->
+                    <!-- Games -->
+                    <div class="form-group dynamic-list-group">
+                        <label>Featured Games</label>
+                        <div class="list-input-container">
+                            <input type="text" id="game-input" placeholder="e.g. Retro Arcade, Spin the Wheel">
+                            <button type="button" id="add-game-btn" class="btn-icon-add" title="Add Game"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="tags-container" id="games-tags"></div>
+                    </div>
+
+                    <!-- Contests -->
+                    <div class="form-group dynamic-list-group">
+                        <label>Featured Contests</label>
+                        <div class="list-input-container">
+                            <input type="text" id="contest-input" placeholder="e.g. Coding Speedrun, Trivia Quiz">
+                            <button type="button" id="add-contest-btn" class="btn-icon-add" title="Add Contest"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="tags-container" id="contests-tags"></div>
+                    </div>
+
+                    <!-- Giveaways / Special Offers -->
+                    <div class="form-group dynamic-list-group">
+                        <label>Prizes & Giveaways (Special Offers)</label>
+                        <div class="list-input-container">
+                            <input type="text" id="offer-input" placeholder="e.g. Free T-Shirts, VR Headset Raffle">
+                            <button type="button" id="add-offer-btn" class="btn-icon-add" title="Add Offer"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="tags-container" id="offers-tags"></div>
+                    </div>
+
+                    <!-- Social Media Links (Collapsible/Accordion) -->
+                    <div class="form-group-accordion">
+                        <button type="button" class="accordion-trigger" id="social-accordion-btn">
+                            <span><i class="fa-solid fa-share-nodes"></i> Social Media & Links</span>
+                            <i class="fa-solid fa-chevron-down accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content" id="social-accordion-content">
+                            <div class="social-input-grid">
+                                <div class="form-group">
+                                    <label><i class="fa-brands fa-linkedin-in text-linkedin"></i> LinkedIn</label>
+                                    <input type="url" id="social_linkedin" placeholder="https://linkedin.com/company/...">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-brands fa-instagram text-instagram"></i> Instagram</label>
+                                    <input type="url" id="social_instagram" placeholder="https://instagram.com/...">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-brands fa-x-twitter text-twitter"></i> X / Twitter</label>
+                                    <input type="url" id="social_twitter" placeholder="https://x.com/...">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-brands fa-facebook-f text-facebook"></i> Facebook</label>
+                                    <input type="url" id="social_facebook" placeholder="https://facebook.com/...">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label><i class="fa-solid fa-globe text-website"></i> Company Website</label>
+                                    <input type="url" id="social_website" placeholder="https://www.company.com">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extra Requirements -->
+                    <div class="form-group-checkbox glass-card">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="electrical_req">
+                            <label for="electrical_req">
+                                <span class="checkbox-custom"></span>
+                                <div class="checkbox-label-text">
+                                    <strong>Electrical Connection Required</strong>
+                                    <p>Check if your stand requires power outlets (220V/110V).</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Form Action Buttons -->
+                    <div class="form-actions">
+                        <button type="submit" id="submit-btn" class="btn-primary">Register Stand <i class="fa-solid fa-paper-plane"></i></button>
+                        <button type="button" id="cancel-edit-btn" class="btn-secondary hidden">Cancel Edit</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Dashboard: Registered Stands -->
+            <section class="dashboard-section">
+                <!-- Dashboard Control Panel -->
+                <div class="dashboard-header glass-panel">
+                    <div class="dashboard-title-row">
+                        <h2><i class="fa-solid fa-list-check"></i> Registered Stands</h2>
+                        <span class="badge-count" id="stands-count">0 registered</span>
+                    </div>
+                    <!-- Search Control -->
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="search-input" placeholder="Search by company, abstract, games, contests, stand #...">
+                        <button id="clear-search-btn" class="btn-icon-clear hidden" title="Clear Search"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+
+                <!-- Stands Grid -->
+                <div class="stands-grid" id="stands-grid">
+                    <!-- Loading state -->
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading registered stands...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Custom JS -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
