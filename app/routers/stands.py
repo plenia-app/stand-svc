@@ -6,7 +6,7 @@ from typing import List, Optional
 from app.database import get_collection
 from app.schemas import StandCreate, StandUpdate, StandResponse
 
-router = APIRouter(prefix="/api/stands", tags=["Stands"])
+router = APIRouter(prefix="/stands", tags=["Stands"])
 
 def get_stands_collection():
     return get_collection("stands")

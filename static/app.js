@@ -1,5 +1,5 @@
 // API Base URL (Relative since frontend is hosted on the same server)
-const API_URL = '/api/stands';
+const API_URL = '/stands';
 
 // Application State
 let stands = [];

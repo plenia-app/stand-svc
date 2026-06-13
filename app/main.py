@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from app.config import settings
-from app.database import connect_to_mongo, close_mongo_connection
+from app.database import close_mongo_connection, connect_to_mongo, db_instance
 from app.routers.stands import router as stands_router
 
 # Configure logging
@@ -65,3 +65,11 @@ async def read_index():
         "message": "Conference Stand Registry API is running. Go to /docs for API documentation. Dashboard index.html is missing.",
         "docs": "/docs"
     }
+
+
+@app.get("/health", tags=["Health"])
+async def health():
+    if db_instance.db is None:
+        raise RuntimeError("MongoDB is not connected")
+    await db_instance.db.command("ping")
+    return {"status": "ok"}
